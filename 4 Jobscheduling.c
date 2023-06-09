@@ -1,22 +1,17 @@
 #include <stdio.h>
-
 #define MAX 100
-
 typedef struct Job 
 {
   char id[5];
   int deadline;
   int profit;
 } Job;
-
 void jobSequencingWithDeadline(Job jobs[], int n);
-
 int minValue(int x, int y) 
 {
   if(x < y) return x;
   return y;
 }
-
 int main(void) 
 {
   //variables
@@ -30,13 +25,10 @@ int main(void)
     {"j4", 2,  40},
     {"j5", 1,  20},
   };
-
   //temp
   Job temp;
-
   //number of jobs
   int n = 5;
-
   //sort the jobs profit wise in descending order
   for(i = 1; i < n; i++) 
   {
@@ -50,7 +42,6 @@ int main(void)
       }
     }
   }
-
   printf("%10s %10s %10s\n", "Job", "Deadline", "Profit");
   for(i = 0; i < n; i++) 
   {
@@ -59,7 +50,6 @@ int main(void)
   jobSequencingWithDeadline(jobs, n);
   return 0;
 }
-
 void jobSequencingWithDeadline(Job jobs[], int n) 
 {
   int i,k, maxprofit;
@@ -105,7 +95,6 @@ void jobSequencingWithDeadline(Job jobs[], int n)
       printf(" --> ");
     }
   }
-
   //required profit
   maxprofit = 0;
   for(i = 1; i <= dmax; i++) 
