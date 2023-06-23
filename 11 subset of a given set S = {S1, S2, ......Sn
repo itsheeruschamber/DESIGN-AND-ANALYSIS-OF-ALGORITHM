@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 100
+
+bool isSubsetSum(int set[], int n, int sum) {
+    bool subset[MAX_SIZE + 1][MAX_SIZE + 1];
+    int i, j;
+
+    // Initialize the subset matrix
+    for (i = 0; i <= n; i++) {
+        subset[i][0] = true;
+    }
+    for (i = 1; i <= sum; i++) {
+        subset[0][i] = false;
+    }
+
+    // Fill the subset matrix in a bottom-up manner
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= sum; j++) {
+            if (j < set[i - 1]) {
+                subset[i][j] = subset[i - 1][j];
+            } else {
+                subset[i][j] = subset[i - 1][j] || subset[i - 1][j - set[i - 1]];
+            }
+        }
+    }
+
+    return subset[n][sum];
+}
+
+void findSubset(int set[], int n, int sum) {
+    if (isSubsetSum(set, n, sum)) {
+        printf("Solution: ");
+        int i = n;
+        int j = sum;
+        while (i > 0 && j > 0) {
+            if (isSubsetSum(set, i - 1, j)) {
+                i--;
+            } else {
+                printf("%d ", set[i - 1]);
+                j -= set[i - 1];
+                i--;
+            }
+        }
+        printf("\n");
+    } else {
+        printf("No solution found.\n");
+    }
+}
+
+int main() {
+    int set[] = {2, 3, 5, 7, 8};
+    int n = sizeof(set) / sizeof(set[0]);
+    int sum = 10;
+
+    findSubset(set, n, sum);
+
+    return 0;
+}
