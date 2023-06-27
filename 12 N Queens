@@ -1,74 +1,54 @@
 #include <stdio.h>
-#include <stdbool.h>
+#include <stdlib.h>  // Include <stdlib.h> for the declaration of 'abs'
+#include <math.h>
 
-#define N 8
+int board[20], count;
 
-void printSolution(int board[N][N]) {
-    int i, j;
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
-            printf("%c ", board[i][j] ? 'Q' : '-');
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-bool isSafe(int board[N][N], int row, int col) {
-    int i, j;
-
-    // Check if there is a queen in the same column
-    for (i = 0; i < row; i++) {
-        if (board[i][col]) {
-            return false;
-        }
-    }
-
-    // Check upper left diagonal
-    for (i = row, j = col; i >= 0 && j >= 0; i--, j--) {
-        if (board[i][j]) {
-            return false;
-        }
-    }
-
-    // Check upper right diagonal
-    for (i = row, j = col; i >= 0 && j < N; i--, j++) {
-        if (board[i][j]) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-bool solveNQueensUtil(int board[N][N], int row) {
-    if (row == N) {
-        printSolution(board);
-        return true;
-    }
-
-    bool res = false;
-    int col;
-    for (col = 0; col < N; col++) {
-        if (isSafe(board, row, col)) {
-            board[row][col] = 1;
-            res = solveNQueensUtil(board, row + 1) || res;
-            board[row][col] = 0;
-        }
-    }
-
-    return res;
-}
-
-void solveNQueens() {
-    int board[N][N] = {0};
-
-    if (!solveNQueensUtil(board, 0)) {
-        printf("No solution found.\n");
-    }
-}
-
+void queen(int row, int n);
+void print(int n);
+int place(int row, int column);
 int main() {
-    solveNQueens();
+    int n;
+    printf(" - N Queens Problem Using Backtracking -\n\n");
+    printf("Enter the number of Queens: ");
+    scanf("%d", &n);
+    queen(1, n);
     return 0;
+}
+void print(int n) {
+    int i, j;
+    printf("\n\nSolution %d:\n\n", ++count);
+    for (i = 1; i <= n; ++i)
+        printf("\t%d", i);
+
+    for (i = 1; i <= n; ++i) {
+        printf("\n\n%d", i);
+        for (j = 1; j <= n; ++j) {
+            if (board[i] == j)
+                printf("\tQ");
+            else
+                printf("\t-");
+        }
+    }
+}
+
+int place(int row, int column) {
+    int i;
+    for (i = 1; i <= row - 1; ++i) {
+        if (board[i] == column || abs(board[i] - column) == abs(i - row))
+            return 0;
+    }
+    return 1;
+}
+void queen(int row, int n) {
+    int column;
+    for (column = 1; column <= n; ++column) {
+        if (place(row, column)) {
+            board[row] = column;
+            if (row == n)
+                print(n);
+            else
+                queen(row + 1, n);
+        }
+    }
 }
