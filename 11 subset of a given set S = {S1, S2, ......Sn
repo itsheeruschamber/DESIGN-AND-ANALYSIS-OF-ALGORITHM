@@ -1,60 +1,59 @@
 #include <stdio.h>
-#include <stdbool.h>
 
 #define MAX_SIZE 100
 
-bool isSubsetSum(int set[], int n, int sum) {
-    bool subset[MAX_SIZE + 1][MAX_SIZE + 1];
-    int i, j;
-
-    // Initialize the subset matrix
-    for (i = 0; i <= n; i++) {
-        subset[i][0] = true;
-    }
-    for (i = 1; i <= sum; i++) {
-        subset[0][i] = false;
-    }
-
-    // Fill the subset matrix in a bottom-up manner
-    for (i = 1; i <= n; i++) {
-        for (j = 1; j <= sum; j++) {
-            if (j < set[i - 1]) {
-                subset[i][j] = subset[i - 1][j];
-            } else {
-                subset[i][j] = subset[i - 1][j] || subset[i - 1][j - set[i - 1]];
-            }
+// Function to find a subset with the given sum
+int findSubset(int set[], int n, int sum, int subset[], int subsetSize)
+{
+    // Base cases
+    if (sum == 0)
+    {
+        // Print the subset
+        printf("{ ");
+        int i;
+        for (i = 0; i < subsetSize; i++)
+        {
+            printf("%d ", subset[i]);
         }
+        printf("}\n");
+        return 1;
+    }
+    if (n == 0 || sum < 0)
+    {
+        return 0;
     }
 
-    return subset[n][sum];
+    // Include the current element in the subset
+    subset[subsetSize] = set[n - 1];
+    int include = findSubset(set, n - 1, sum - set[n - 1], subset, subsetSize + 1);
+
+    // Exclude the current element from the subset
+    int exclude = findSubset(set, n - 1, sum, subset, subsetSize);
+
+    return include || exclude;
 }
 
-void findSubset(int set[], int n, int sum) {
-    if (isSubsetSum(set, n, sum)) {
-        printf("Solution: ");
-        int i = n;
-        int j = sum;
-        while (i > 0 && j > 0) {
-            if (isSubsetSum(set, i - 1, j)) {
-                i--;
-            } else {
-                printf("%d ", set[i - 1]);
-                j -= set[i - 1];
-                i--;
-            }
-        }
-        printf("\n");
-    } else {
-        printf("No solution found.\n");
+// Function to check if a subset exists with the given sum
+void checkSubset(int set[], int n, int sum)
+{
+    int subset[MAX_SIZE];
+    int subsetSize = 0;
+    int found = findSubset(set, n, sum, subset, subsetSize);
+    if (!found)
+    {
+        printf("No subset found with the given sum.\n");
     }
 }
 
-int main() {
+// Main function
+int main()
+{
     int set[] = {2, 3, 5, 7, 8};
     int n = sizeof(set) / sizeof(set[0]);
-    int sum = 10;
+    int targetSum = 10;
 
-    findSubset(set, n, sum);
+    printf("Subsets with sum %d:\n", targetSum);
+    checkSubset(set, n, targetSum);
 
     return 0;
 }
