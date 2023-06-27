@@ -1,56 +1,70 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 
-#define MAX_VERTICES 100
-
-void floydWarshall(int graph[MAX_VERTICES][MAX_VERTICES], int numVertices) {
-    int dist[MAX_VERTICES][MAX_VERTICES];
+void floydWarshall(int** graph, int n) {
     int i, j, k;
-
-    // Initialize the distance matrix with the graph values
-    for (i = 0; i < numVertices; i++) {
-        for (j = 0; j < numVertices; j++) {
-            dist[i][j] = graph[i][j];
-        }
-    }
-
-    // Calculate the shortest paths using dynamic programming
-    for (k = 0; k < numVertices; k++) {
-        for (i = 0; i < numVertices; i++) {
-            for (j = 0; j < numVertices; j++) {
-                if (dist[i][k] != INT_MAX && dist[k][j] != INT_MAX &&
-                    dist[i][k] + dist[k][j] < dist[i][j]) {
-                    dist[i][j] = dist[i][k] + dist[k][j];
-                }
+    
+    for (k = 0; k < n; k++) {
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                if (graph[i][j] > graph[i][k] + graph[k][j])
+                    graph[i][j] = graph[i][k] + graph[k][j];
             }
         }
-    }
-
-    // Print the shortest distances
-    printf("Shortest distances between all pairs of vertices:\n");
-    for (i = 0; i < numVertices; i++) {
-        for (j = 0; j < numVertices; j++) {
-            if (dist[i][j] == INT_MAX) {
-                printf("INF\t");
-            } else {
-                printf("%d\t", dist[i][j]);
-            }
-        }
-        printf("\n");
     }
 }
 
-int main() {
-    int numVertices = 4;
-    int graph[MAX_VERTICES][MAX_VERTICES] = {
-        {0, 5, INT_MAX, 10},
-        {INT_MAX, 0, 3, INT_MAX},
-        {INT_MAX, INT_MAX, 0, 1},
-        {INT_MAX, INT_MAX, INT_MAX, 0}
-    };
-
-    floydWarshall(graph, numVertices);
-
+int main(void) {
+    int n, i, j;
+    
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    
+    int** graph = (int**)malloc(n * sizeof(int*));
+    for (i = 0; i < n; i++) {
+        graph[i] = (int*)malloc(n * sizeof(int));
+    }
+    
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            if (i == j)
+                graph[i][j] = 0;
+            else
+                graph[i][j] = 100;
+        }
+    }
+    
+    printf("Enter the edges:\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            printf("[%d][%d]: ", i, j);
+            scanf("%d", &graph[i][j]);
+        }
+    }
+    
+    printf("The original graph is:\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            printf("%d ", graph[i][j]);
+        }
+        printf("\n");
+    }
+    
+    floydWarshall(graph, n);
+    
+    printf("The shortest path matrix is:\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            printf("%d ", graph[i][j]);
+        }
+        printf("\n");
+    }
+    
+    // Free allocated memory
+    for (i = 0; i < n; i++) {
+        free(graph[i]);
+    }
+    free(graph);
+    
     return 0;
 }
