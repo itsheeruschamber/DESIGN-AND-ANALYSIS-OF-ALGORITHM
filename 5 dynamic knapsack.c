@@ -43,3 +43,15 @@ int main()
  printf("The maximum profit is %d",profit);
  return 0;
 }
+
+
+//OUTPUT-->>
+Enter the total number of items
+4
+Enter the weight of the items
+3 4 6 5
+Enter the profits of the items
+2 3 1 4
+Enter the maximum weight
+8
+The maximum profit is 6
