@@ -74,3 +74,34 @@ int main()
     put();
     return 0;
 }
+
+
+//OUTPUT==>>
+Enter the number of cities: 4
+
+Enter the cost matrix:
+Enter elements of row 1:
+0 10 15 20
+Enter elements of row 2:
+10 0 35 25
+Enter elements of row 3:
+15 35 0 30
+Enter elements of row 4:
+20 25 30 0
+
+The cost list is:
+
+    0       10      15      20
+
+    10      0       35      25
+
+    15      35      0       30
+
+    20      25      30      0
+
+The path is:
+
+1-->2-->4-->3-->1
+
+Minimum cost: 80
+
