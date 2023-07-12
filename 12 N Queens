@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>  // Include <stdlib.h> for the declaration of 'abs'
 #include <math.h>
-
 int board[20], count;
-
 void queen(int row, int n);
 void print(int n);
 int place(int row, int column);
@@ -20,7 +18,6 @@ void print(int n) {
     printf("\n\nSolution %d:\n\n", ++count);
     for (i = 1; i <= n; ++i)
         printf("\t%d", i);
-
     for (i = 1; i <= n; ++i) {
         printf("\n\n%d", i);
         for (j = 1; j <= n; ++j) {
@@ -31,7 +28,6 @@ void print(int n) {
         }
     }
 }
-
 int place(int row, int column) {
     int i;
     for (i = 1; i <= row - 1; ++i) {
@@ -52,3 +48,32 @@ void queen(int row, int n) {
         }
     }
 }
+
+//OUTPUT==>>
+/tmp/EhfxSdMbZV.o
+- N Queens Problem Using Backtracking -
+
+Enter the number of Queens: 4
+Solution 1:
+
+	1	2	3	4
+
+1	-	Q	-	-
+
+2	-	-	-	Q
+
+3	Q	-	-	-
+
+4	-	-	Q	-
+
+Solution 2:
+
+	1	2	3	4
+
+1	-	-	Q	-
+
+2	Q	-	-	-
+
+3	-	-	-	Q
+
+4	-	Q	-	-
